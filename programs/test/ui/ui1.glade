@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.2 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkWindow" id="window">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Spidal</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkHeaderBar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="title" translatable="yes">Spidal</property>
+            <child>
+              <object class="GtkButton" id="backButton">
+                <property name="label" translatable="yes">Retour</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="always_show_image">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStack" id="stack">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkButton" id="buttonFreeRun">
+                    <property name="label" translatable="yes">Course Libre</property>
+                    <property name="width_request">400</property>
+                    <property name="height_request">64</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="margin_top">30</property>
+                    <property name="margin_bottom">30</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="buttonFreeRun1">
+                    <property name="label" translatable="yes">Entrainement 1 personne</property>
+                    <property name="width_request">400</property>
+                    <property name="height_request">64</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="margin_top">30</property>
+                    <property name="margin_bottom">30</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="buttonFreeRun2">
+                    <property name="label" translatable="yes">Entrainement 2 personnes</property>
+                    <property name="width_request">400</property>
+                    <property name="height_request">64</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
+                    <property name="margin_top">30</property>
+                    <property name="margin_bottom">30</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="name">page0</property>
+                <property name="title" translatable="yes">page0</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
