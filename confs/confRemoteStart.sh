@@ -24,8 +24,8 @@ if [ "$1" = "enable" ]
 then
 	# Enable configuration
 	echo "Backing up rc.local file"
-	cp /etc/rc.local /etc/rc.local.back
-	cp /etc/rc.local $ROOT/confs/remoteStartConfs/bak/rc.local.bak
+	cp /etc/rc.local /etc/rc.local.bak
+	#cp /etc/rc.local $ROOT/confs/remoteStartConfs/bak/rc.local.bak
 	echo "Changing rc.local file"
 	rm /etc/rc.local
 	cp $ROOT/confs/remoteStartConfs/rc.local /etc/rc.local
@@ -35,7 +35,7 @@ then
 	# Disable configuration	
 	echo "Restoring rc.local file"
 	rm /etc/rc.local
-	cp $ROOT/confs/remoteStartConfs/bak/rc.local.bak /etc/rc.local
+	cp etc/rc.local.bak /etc/rc.local
 else
 	echo "Illegal parameter value : enable or disable" >&2
 	exit -1

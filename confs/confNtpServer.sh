@@ -27,7 +27,7 @@ then
 	timedatectl set-ntp false
 	echo "Backing up NTP configuration file"
 	cp /etc/ntp.conf /etc/ntp.server.conf.bak
-	cp /etc/ntp.conf $ROOT/confs/ntpConfs/bak/ntp.server.conf.bak
+	#cp /etc/ntp.conf $ROOT/confs/ntpConfs/bak/ntp.server.conf.bak
 	echo "Changing NTP configuration file"
 	rm /etc/ntp.conf
 	cp $ROOT/confs/ntpConfs/ntp.server.conf /etc/ntp.conf
@@ -39,7 +39,7 @@ then
 	# Disable configuration	
 	echo "Restoring NTP configuration file"
 	rm /etc/ntp.conf
-	cp $ROOT/confs/ntpConfs/bak/ntp.server.conf.bak /etc/ntp.conf
+	cp /etc/ntp.server.conf.bak /etc/ntp.conf
 	echo "Stoping NTP service"
 	service ntp stop
 	echo "Enabling default time configuration"

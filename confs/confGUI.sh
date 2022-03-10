@@ -23,17 +23,24 @@ fi
 if [ "$1" = "enable" ]
 then
 	# Enable configuration
-	echo "Backing up xinitrc file"
-	cp /etc/X11/xinit/xinitrc /etc/X11/xinit/xinitrc.bak
-	cp /etc/X11/xinit/xinitrc $ROOT/confs/GUIConfs/bak/xinitrc.bak
-	echo "Changing xinitrc file"
-	rm /etc/X11/xinit/xinitrc
-	cp $ROOT/confs/GUIConfs/xinitrc /etc/X11/xinit/xinitrc
+	#echo "Backing up xinitrc file"
+	#cp /etc/X11/xinit/xinitrc /etc/X11/xinit/xinitrc.bak
+	#cp /etc/X11/xinit/xinitrc $ROOT/confs/GUIConfs/bak/xinitrc.bak
+	#echo "Changing xinitrc file"
+	#rm /etc/X11/xinit/xinitrc
+	#cp $ROOT/confs/GUIConfs/xinitrc /etc/X11/xinit/xinitrc
+
+	echo "Backing up rc.local file"
+	cp /etc/rc.local /etc/rc.local.bak
+	#cp /etc/rc.local $ROOT/confs/remoteStartConfs/bak/rc.local.bak
+	echo "Changing rc.local file"
+	rm /etc/rc.local
+	cp $ROOT/confs/GUIConfs/rc.local /etc/rc.local
 
 	# Splash screen
 	echo "Backing up splash screen image"
 	cp /usr/share/plymouth/themes/pix/splash.png /usr/share/plymouth/themes/pix/splash.png.bak
-	cp /usr/share/plymouth/themes/pix/splash.png $ROOT/confs/GUIConfs/bak/splash.png.bak
+	#cp /usr/share/plymouth/themes/pix/splash.png $ROOT/confs/GUIConfs/bak/splash.png.bak
 	echo "Changing splash screen"
 	rm /usr/share/plymouth/themes/pix/splash.png
 	cp $ROOT/confs/GUIConfs/splash.png /usr/share/plymouth/themes/pix/splash.png
@@ -42,14 +49,17 @@ then
 elif [ "$1" = "disable" ]
 then
 	# Disable configuration	
-	echo "Restoring xinitrc file"
-	rm /etc/X11/xinit/xinitrc
-	cp $ROOT/confs/GUIConfs/bak/xinitrc.bak /etc/X11/xinit/xinitrc
+	#echo "Restoring xinitrc file"
+	#rm /etc/X11/xinit/xinitrc
+	#cp $ROOT/confs/GUIConfs/bak/xinitrc.bak /etc/X11/xinit/xinitrc
+	echo "Restoring rc.local file"
+	rm /etc/rc.local
+	cp /etc/rc.local.bak /etc/rc.local
 
 	# Splash screen
 	echo "Restoring splash screen image"
 	rm /usr/share/plymouth/themes/pix/splash.png
-	cp $ROOT/confs/GUIConfs/bak/splash.png.bak /usr/share/plymouth/themes/pix/splash.png 
+	cp /usr/share/plymouth/themes/pix/splash.png.bak /usr/share/plymouth/themes/pix/splash.png 
 else
 	echo "Illegal parameter value : enable or disable" >&2
 	exit -1

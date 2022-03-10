@@ -28,22 +28,22 @@ then
 	cp /etc/dhcpcd.conf $ROOT/confs/wifiConfs/bak/dhcpcd.conf.bak
 	
 	cp /etc/network/interfaces /etc/network/interfaces.bak
-	cp /etc/network/interfaces $ROOT/confs/wifiConfs/bak/interfaces.bak
+	#cp /etc/network/interfaces $ROOT/confs/wifiConfs/bak/interfaces.bak
 	rm /etc/network/interfaces 
 	
 	cp /etc/hostapd/hostapd.conf /etc/hostapd/hostapd.conf.bak
-	cp /etc/hostapd/hostapd.conf $ROOT/confs/wifiConfs/bak/hostapd.conf.bak
+	#cp /etc/hostapd/hostapd.conf $ROOT/confs/wifiConfs/bak/hostapd.conf.bak
 	rm /etc/hostapd/hostapd.conf
 	
 	if [ -f "/etc/default/hostapd" ]
 	then
 		cp /etc/default/hostapd /etc/default/hostapd.bak
-		cp /etc/default/hostapd $ROOT/confs/wifiConfs/bak/hostapd.txt.bak
+		#cp /etc/default/hostapd $ROOT/confs/wifiConfs/bak/hostapd.txt.bak
 		rm /etc/default/hostapd 
 	fi
 	
 	cp /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
-	cp /etc/dnsmasq.conf $ROOT/confs/wifiConfs/bak/dnsmasq.conf.bak
+	#cp /etc/dnsmasq.conf $ROOT/confs/wifiConfs/bak/dnsmasq.conf.bak
 	rm /etc/dnsmasq.conf
 	
 	echo "Installing new configuration files"
@@ -67,14 +67,14 @@ then
 	rm /etc/default/hostapd 
 	rm /etc/dnsmasq.conf
 	
-	cp $ROOT/confs/wifiConfs/bak/dhcpcd.conf.bak /etc/dhcpcd.conf
-	cp $ROOT/confs/wifiConfs/bak/interfaces.bak /etc/network/interfaces
-	cp $ROOT/confs/wifiConfs/bak/hostapd.conf.bak /etc/hostapd/hostapd.conf
-	if [ -f "$ROOT/confs/wifiConfs/bak/hostapd.txt.bak" ]
+	cp etc/dhcpcd.conf.bak /etc/dhcpcd.conf
+	cp /etc/network/interfaces.bak /etc/network/interfaces
+	cp /etc/hostapd/hostapd.conf.bak /etc/hostapd/hostapd.conf
+	if [ -f "/etc/default/hostapd.bak" ]
 	then
-		cp $ROOT/confs/wifiConfs/bak/hostapd.txt.bak /etc/default/hostapd
+		cp /etc/default/hostapd.bak /etc/default/hostapd
 	fi
-	cp $ROOT/confs/wifiConfs/bak/dnsmasq.conf.bak /etc/dnsmasq.conf
+	cp /etc/dnsmasq.conf.bak /etc/dnsmasq.conf
 	
 	systemctl disable hostapd.service
 	systemctl mask hostapd.service
