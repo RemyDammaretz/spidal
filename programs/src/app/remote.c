@@ -49,9 +49,10 @@ int main(void) {
     btn1State = getGPIOValue(PIN_BTN_1, BTN_1_REVERSE_INPUT);
     btn2State = getGPIOValue(PIN_BTN_2, BTN_2_REVERSE_INPUT);
 
+    // Connection to Spidal loop
     while (1) {
-        // Connexion to spidal
-        printf("Connexion ...\n");
+        // Connection to Spidal
+        printf("Connection ...\n");
         clientConnect(&sd, &clientAddr, CLIENT_PORT, &serverAddr, SERVER_IP, SERVER_PORT);
         printf("Connected !\n");
 
@@ -61,9 +62,9 @@ int main(void) {
             "--pthread_create()"
         );
 
-        // Wait for ping thread end meaning that we lost connexion
+        // Wait for ping thread end meaning that we lost connection
         CHECK_T(pthread_join(threadPing, NULL), "--pthread_join()");
-        printf("Lost connexion ...\n");
+        printf("Lost connection ...\n");
         close(sd);
     }
 
@@ -72,7 +73,9 @@ int main(void) {
 
 // Manage inputs interrupts
 void inputCallback(int gpio, int level, uint32_t tick) {
+    // Get time
 	clock_gettime(CLOCK_REALTIME, &timeInterrupt);
+    // BTN 1
 	if (listenBtn1 && gpio == PIN_BTN_1) {
         listenBtn1 = 0;
         timeInterrupt1 = timeInterrupt;
@@ -86,7 +89,9 @@ void inputCallback(int gpio, int level, uint32_t tick) {
 	        sendMessage(sd, &message, sizeof(message));	
         }
         listenBtn1 = 1;
-    } else if (listenBtn2 && gpio == PIN_BTN_2) {
+    } 
+    // BTN 2
+    else if (listenBtn2 && gpio == PIN_BTN_2) {
         listenBtn2 = 0;
         timeInterrupt2 = timeInterrupt;
         usleep(INPUT_DELAY);
@@ -114,32 +119,38 @@ void * pingThread() {
     struct timeval timeout = { PING_TIMEOUT, 0 };
     int err;
 	
+    // Connection
 	clientConnect(&sdPing, &clientAddr, CLIENT_PORT_PING, &serverAddr, SERVER_IP, SERVER_PORT_PING);
         
     FD_ZERO(&readFd);
     FD_SET(sdPing, &readFd);
 
+    // Send first ping
     sendMessage(sdPing, &pingInfo, sizeof(pingInfo));
 
     while (1) {
+        // Setup timeout
         timeout.tv_sec = PING_TIMEOUT;
         timeout.tv_usec = 0;
+
+        // Wait for ping message with timeout
         err = select(sdPing + 1, &readFd, NULL, NULL, &timeout);
-        //printf("select ok\n");
         if (err <= 0) {
             // Error or timeout
 	        close(sdPing);
+            // Exit ping thread to inform main thread of the connection loss
 	        pthread_exit(NULL);
         } else if (err > 0) {
             if (!waitForMessage(sdPing, &pingInfo, sizeof(pingInfo))) {
-                // Lost connexion
+                // Connection loss
                 close(sdPing);
+                // Exit ping thread to inform main thread of the connection loss
                 pthread_exit(NULL);
             }
-            //printf("recv ping\n");
             sleep(PING_DELAY);
+
+            // Send ping response
             sendMessage(sdPing, &pingInfo, sizeof(pingInfo));
-            //printf("Send ping\n");
             sleep(1);
         }
     }

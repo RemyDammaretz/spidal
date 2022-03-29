@@ -1,9 +1,16 @@
 # Spidal
 
-Chronometre pour l'escalade de vitesse
+Chronomètre pour l'escalade de vitesse
 
 ![Logo Spidal](https://github.com/RemyDammaretz/spidal/blob/master/confs/GUIConfs/splash.png?raw=true)
 
+# Sommaire
+
+ 1. Installation
+	 1. Matériel
+	 2. Module Spidal
+	 3. Module Spidal Remote 
+ 2. Tester l'application graphique sans Raspberry Pi
 
 # Installation
 
@@ -156,3 +163,31 @@ Vous pouvez toujours à tout moment désactiver les configurations et remettre l
 
     ./confNTPClient.sh disable
     ./confRemoteStart.sh disable
+
+
+# Tester l'application graphique sans Raspberry Pi
+
+Il est normalement nécessaire d'être sur un Raspberry Pi pour faire fonctionner le programme avec les ports GPIO mais ce n'est pas pratique pour tester l'application graphique.
+Pour contourner ce problème, il est possible de tester l'application graphique sans être sur un Raspberry Pi avec un autre mode de compilation. 
+Pour cela, rendez-vous dans le répertoire `/home/pi/spidal/programs/`  et compilez le programme de la manière suivante :
+
+    make noRPI
+
+Vous pouvez ensuite exécuter l'application avec la commande
+
+    bin/app/noRPI
+
+Dans ce mode de fonctionnement, le processus d'arrière plan gérant la connexion avec le module distant ainsi que les ports GPIO du Raspberry Pi est remplacé par un programme simulant le comportement normal de ce processus.
+Pour simuler une action du Raspberry Pi, il faut taper dans la console l'une des lettres suivantes puis appuyer sur **Enter** :
+
+-   a : changer l’état du bouton 1
+    
+-   z : changer l’état du bouton 2
+    
+-   q : changer l’état de la pédale 1
+    
+-   s : changer l’état de la pédale 2
+    
+-   r : changer l’état de la connexion entre les deux modules
+
+

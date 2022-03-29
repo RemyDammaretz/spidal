@@ -1,18 +1,18 @@
 #include "../../include/check.h"
 #include "../../include/socketLib.h"
 
-// Setup socket and wait for connexion for Server
+// Setup socket and wait for connection for Server
 void serverConnect(int * se, int * sd, struct sockaddr_in * serverAddr, int serverPort) {
 	// Setup TCP listening socket
 	setupSocket(se, serverAddr, serverPort);
 	
-	// Waiting for connexion
+	// Waiting for connection
 	listen(*se, 1);
 	*sd = accept(*se, NULL, NULL);
 	CHECK(*sd, "--accept()");
 }
 
-// Setup socket and wait for connexion for Client
+// Setup socket and wait for connection for Client
 void clientConnect(int * sd, struct sockaddr_in * clientAddr, int clientPort, struct sockaddr_in * serverAddr, char * serverIP, int serverPort) {
 	//int status = -1;
 	
@@ -24,7 +24,7 @@ void clientConnect(int * sd, struct sockaddr_in * clientAddr, int clientPort, st
 	serverAddr->sin_port = htons(serverPort);
 	serverAddr->sin_addr.s_addr = inet_addr(serverIP);
 	
-	// Connexion
+	// Connection
 	// do {
 	// 	status = connect(*sd, (const struct sockaddr *) serverAddr, sizeof(*serverAddr));
 	// } while (status == -1);	

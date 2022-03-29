@@ -55,6 +55,7 @@ void sendData();
 int main(int argc, char * argv[]) {
 	struct sockaddr_in serverAddr;
 
+    // Get data output file descriptor (stdout by default)
     if (argc != 2) {
         out = STDOUT_FILENO;
     } else {
@@ -72,8 +73,9 @@ int main(int argc, char * argv[]) {
     pedal1State = getGPIOValue(PIN_PEDAL_1, PEDAL_1_REVERSE_INPUT);
     pedal2State = getGPIOValue(PIN_PEDAL_2, PEDAL_2_REVERSE_INPUT);
 
+    // Connection to Spidal Remote loop
     while (1) {
-        // Connexion to spidalremote
+        // Connection to Spidal Remote
         serverConnect(&se, &sd, &serverAddr, SERVER_PORT);
         dataLength = sprintf(data, "REMOTE:1:0:0\n");
         sendData();
@@ -90,11 +92,11 @@ int main(int argc, char * argv[]) {
             "--pthread_create()"
         );
 
-        // Wait for ping thread end meaning that we lost connexion
+        // Wait for ping thread end meaning that we lost connection
         CHECK_T(pthread_join(threadPing, NULL), "--pthread_join()");
         dataLength = sprintf(data, "REMOTE:0:0:0\n");
         sendData();
-        pthread_cancel(threadMessages);
+        pthread_cancel(threadMessages); // Kill message thread
         close(sd);
 	    close(se);
     }
@@ -107,7 +109,9 @@ int main(int argc, char * argv[]) {
 
 // Manage inputs interrupts
 void inputCallback(int gpio, int level, uint32_t tick) {
+    // Get time
 	clock_gettime(CLOCK_REALTIME, &timeInterrupt);
+    // Pedal 1
 	if (listenPedal1 && gpio == PIN_PEDAL_1) {
         listenPedal1 = 0;
         timeInterrupt1 = timeInterrupt;
@@ -118,7 +122,9 @@ void inputCallback(int gpio, int level, uint32_t tick) {
             sendData();
         }
         listenPedal1 = 1;
-    } else if (listenPedal2 && gpio == PIN_PEDAL_2) {
+    } 
+    // Pedal 2 
+    else if (listenPedal2 && gpio == PIN_PEDAL_2) {
         listenPedal2 = 0;
         timeInterrupt2 = timeInterrupt;
         usleep(INPUT_DELAY);
@@ -152,37 +158,43 @@ void * pingThread() {
     struct timeval timeout = { PING_TIMEOUT, 0 };
     int err;
 	
+    // Connection 
 	serverConnect(&sePing, &sdPing, &serverAddr, SERVER_PORT_PING);
 
     FD_ZERO(&readFd);
     FD_SET(sdPing, &readFd);
 	
     while (1) {
+        // Setup ping timeout
         timeout.tv_sec = PING_TIMEOUT;
         timeout.tv_usec = 0;
+
+        // Wait for ping message with timeout
         err = select(sdPing + 1, &readFd, NULL, NULL, &timeout);
-        //printf("%ld : %ld\n", timeout.tv_sec, timeout.tv_usec);
         if (err <= 0) {
             // Error or timeout
             close(sePing);
 	        close(sdPing);
+            // Exit ping thread to inform main thread of the connection loss
 	        pthread_exit(NULL);
         } else if (err > 0) {
             if (!waitForMessage(sdPing, &pingInfo, sizeof(pingInfo))) {
-                // Lost connexion
+                // Connection loss
                 close(sePing);
                 close(sdPing);
-                pthread_exit(NULL);
+                // Exit ping thread to inform main thread of the connection loss
+                pthread_exit(NULL); 
             }
-            //printf("recv ping\n");
             sleep(PING_DELAY);
+
+            // Send response ping
             sendMessage(sdPing, &pingInfo, sizeof(pingInfo));
-            //printf("Send ping\n");
             sleep(1);
         }
     }
 }
 
+// Function to send data to UI process
 void sendData() {
     write(out, data, dataLength+1);
 }
